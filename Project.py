@@ -4,8 +4,6 @@ import json
 from key import TOKEN,API_KEY
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 URL_WEATHER_API = 'https://api.openweathermap.org/data/2.5/weather'
-#Доделать словарь с эмоджи по погоде (ключ - это id погоды пример(weather {'id': 804}),
-# значение эмоджи)
 EMOJI_CODE = {
     200: '⛈️',
     201: '⛈️', 
@@ -70,11 +68,6 @@ keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
 keyboard.add(KeyboardButton('Получить погоду', request_location=True))
 keyboard.add(KeyboardButton('О проекте'))
 
-
-#Нужно добавить описание погоды weather description
-# Кодировка погоды для словаря EMOJI_CODE weather id
-# температуру temp, температуру по ощущению 'feels like', влажность 'humidity'
-#Добавлять к строке переменной message всю нужную информацию
 def get_weather(lat, lon):
     params = {
     'lat': lat,
@@ -94,22 +87,18 @@ def send_welcome(message):
     text = '🔖Отправь мне местоположение и я отправлю погоду'
     bot.send_message(message.chat.id, text, reply_markup=keyboard)
 
-#Добавить способ определения локация пользователя.
-# Для этого используйте атрибуты объекта message
-# Впишите их в переменные lon и lat
+
 @bot.message_handler(content_types = ['location'])
 def send_weather(message):    
     lon = message.location.longitude
     lat = message.location.latitude
     result = get_weather(lat, lon)
     bot.send_message(message.chat.id, result, reply_markup=keyboard)
-    print
 
-# Дополните информацию о проекте
 @bot.message_handler(regexp = 'О проекте')
 def about_author(message):
     about_text = "🗞️Об авторе и боте🗞️\n\n"
-    about_text += "👨‍💻Автор: Андрей\n"
+    about_text += "👨‍💻Автор: @Lolz_k\n"
     about_text += "🤖О боте: Бот, для получения актуальных данных о погоде\n"
     about_text += "📅Создан: [8.03.26]\n"
     about_text += "🖥️Используемые API: openweathermap.org\n"
